@@ -3,6 +3,7 @@ import './App.css';
 
 import Header from './Components/Header';
 import Player from './Components/Player';
+import AddPlayerForm from './Components/AddPlayerForm';
 
 class App extends Component {
   state = {
@@ -29,6 +30,8 @@ class App extends Component {
       }
     ]
   }
+  //player id counter
+  prevPlayerId = 4;
 
   handleScoreChange = (index,delta) => {
     this.setState(prevState => ({
@@ -36,8 +39,24 @@ class App extends Component {
     }));
   }
 
+  handleAddPlayer = (name) => {
+    this.setState( prevState => {
+      return{
+        players: [
+          ...prevState.players,
+          {
+            name,
+            score: 0,
+            id: this.prevPlayerId += 1
+          }
+        ]
+      };
+    });
+  }
+
   handleRemovePlayer = (id) => {
     this.setState(prevState => {
+      console.log(prevState)
       return {
         players:prevState.players.filter(p => p.id !== id)
       }
@@ -47,7 +66,11 @@ class App extends Component {
   render(){
     return (
       <div className='scoreboard'>
-        <Header title='Scoreboard' totalPlayers={this.state.players.length} />
+        <Header
+        title='Scoreboard'
+        players={this.state.players}
+        />
+
         {/* Players List */}
         {this.state.players.map( (player,index) =>
           <Player
@@ -60,7 +83,10 @@ class App extends Component {
           changeScore={this.handleScoreChange}
            />
         )}
+
+        <AddPlayerForm addPlayer={this.handleAddPlayer} />
       </div>
+
     );
   }
 
