@@ -31,6 +31,7 @@ class Stopwatch extends Component {
       this.setState({previousTime: Date.now() })
     }
   }
+
   handleReset = () => {
     this.setState({
       elapsedTime: 0
